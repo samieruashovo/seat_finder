@@ -1,3 +1,3 @@
 # seat_finder
 
-This project is being developed by Team The Expandables
+This project is being developed by Team The Expendables
