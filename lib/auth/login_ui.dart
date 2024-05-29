@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:seat_finder/auth/signup_ui.dart';
+
+import '../controllers/auth/login_controller.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginController loginController = Get.put(LoginController());
+  var isLogin = false.obs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +83,9 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: TextFormField(
+                      controller: loginController.emailController,
                       decoration: const InputDecoration(
+                        fillColor: Colors.white,
                         labelText: 'Email',
                         labelStyle: TextStyle(
                           color: Colors.white,
@@ -85,6 +93,16 @@ class _LoginPageState extends State<LoginPage> {
                         border: InputBorder.none,
                         prefixIcon: Icon(Icons.email),
                         focusedBorder: InputBorder.none,
+                        hintText: 'Enter your email',
+                        hintStyle: TextStyle(
+                          color: Colors.white70, // Adjust this color as needed
+                        ),
+                        floatingLabelBehavior:
+                            FloatingLabelBehavior.never, // Add this line
+                      ),
+                      style: TextStyle(
+                        color: Colors
+                            .white, // Adjust this color to your preferred text color
                       ),
                     ),
                   ),
@@ -99,14 +117,26 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: TextFormField(
+                      controller: loginController.passwordController,
                       decoration: const InputDecoration(
-                        labelText: 'Password',
+                        fillColor: Colors.white,
+                        labelText: 'password',
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.password_outlined),
+                        prefixIcon: Icon(Icons.email),
                         focusedBorder: InputBorder.none,
+                        hintText: 'Enter your password',
+                        hintStyle: TextStyle(
+                          color: Colors.white70, // Adjust this color as needed
+                        ),
+                        floatingLabelBehavior:
+                            FloatingLabelBehavior.never, // Add this line
+                      ),
+                      style: TextStyle(
+                        color: Colors
+                            .white, // Adjust this color to your preferred text color
                       ),
                     ),
                   ),
@@ -127,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10.0)),
                           )),
-                      onPressed: () {},
+                      onPressed: () => loginController.loginWithEmail(),
                       child: const Text(
                         'Login',
                         style: TextStyle(color: Colors.white),
@@ -138,7 +168,9 @@ class _LoginPageState extends State<LoginPage> {
                     height: 40,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(SignupPage());
+                    },
                     child: const Column(
                       children: [
                         Text(

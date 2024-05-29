@@ -278,7 +278,7 @@ class _EventDescriptionPageState extends State<EventDescriptionPage> {
                 ],
               ),
               SizedBox(
-                height: 80,
+                height: 50,
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(

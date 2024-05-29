@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:seat_finder/auth/login_ui.dart';
+
+import 'auth/signup_ui.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -53,7 +56,10 @@ class StartPage extends StatelessWidget {
               ),
             ),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
+              },
               style: ElevatedButton.styleFrom(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 50, vertical: 0),
@@ -91,7 +97,10 @@ class StartPage extends StatelessWidget {
               ),
             ),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SignupPage()));
+              },
               style: ElevatedButton.styleFrom(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 42, vertical: 0),

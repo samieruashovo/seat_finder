@@ -1,4 +1,10 @@
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:seat_finder/auth/login_ui.dart';
+import 'package:seat_finder/auth/signup_ui.dart';
+import 'package:seat_finder/core/event_description_ui.dart';
+import 'package:seat_finder/core/payment_ui.dart';
+import 'package:seat_finder/core/profile_page.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key});
@@ -8,8 +14,28 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
+  final _pageController = PageController(initialPage: 0);
+
+  /// Controller to handle bottom nav bar and also handles initial page
+  final NotchBottomBarController _controller =
+      NotchBottomBarController(index: 0);
+
+  int maxCount = 5;
+  @override
+  void dispose() {
+    _pageController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final List<Widget> bottomBarPages = [
+      const PaymentPage(),
+      const SignupPage(),
+      const EventDescriptionPage(),
+      const LoginPage(),
+    ];
     return Scaffold(
       // appBar: AppBar(
       //   title: Image.asset('assets/seatfinder 1.png'),
@@ -49,9 +75,15 @@ class _EventPageState extends State<EventPage> {
                       padding: const EdgeInsets.only(top: 10, left: 30),
                       child: Align(
                           alignment: Alignment.topLeft,
-                          child: Image.asset(
-                            'assets/nav_icon_1.png',
-                            // width: 200,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const ProfilePage()));
+                            },
+                            child: Image.asset(
+                              'assets/nav_icon_1.png',
+                              // width: 200,
+                            ),
                           )),
                     ),
                     Padding(
