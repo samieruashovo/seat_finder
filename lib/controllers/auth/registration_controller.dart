@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../api_endpoints.dart';
+import '../../core/nav_bar_page.dart';
 
 class RegisterationController extends GetxController {
   TextEditingController nameController = TextEditingController();
@@ -42,7 +43,7 @@ class RegisterationController extends GetxController {
         nameController.clear();
         emailController.clear();
         passwordController.clear();
-        Get.offAll(EventPage());
+        Get.offAll(NavBarPage());
       } else {
         throw jsonDecode(response.body)["Message"] ?? "Unknown Error Occured";
       }

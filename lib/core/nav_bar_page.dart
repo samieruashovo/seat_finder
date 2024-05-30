@@ -40,7 +40,7 @@ class _NavBarPageState extends State<NavBarPage> {
       //   controller: (_controller),
       // ),
       const EventPage(),
-      const EventDescriptionPage(),
+      // const EventDescriptionPage(),
       const ScanQrPage(),
       const PaymentPage(),
     ];

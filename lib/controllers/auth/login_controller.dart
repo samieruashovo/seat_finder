@@ -7,6 +7,7 @@ import 'package:seat_finder/core/event_page_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api_endpoints.dart';
+import '../../core/nav_bar_page.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
@@ -37,7 +38,7 @@ class LoginController extends GetxController {
 
         // emailController.clear();
         // passwordController.clear();
-        Get.offAll(EventPage());
+        Get.offAll(NavBarPage());
       } else {
         throw jsonDecode(response.body)["Message"] ?? "Unknown Error Occured";
       }
