@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../widgets/my_name.dart';
+
 class ScanQrPage extends StatefulWidget {
   const ScanQrPage({super.key});
 
@@ -75,11 +77,7 @@ class _ScanQrPageState extends State<ScanQrPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                " My Name",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
+                              const MyName(),
                               Container(
                                 width: 72, // Increase the width
                                 height: 100,

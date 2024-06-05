@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:seat_finder/controllers/api/api_controller.dart';
+import 'package:seat_finder/payment/bkash_payment.dart';
+
+import '../widgets/my_name.dart';
 
 class PaymentPage extends StatefulWidget {
-  const PaymentPage({super.key});
+  final event;
+  const PaymentPage({super.key, this.event});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -68,34 +74,11 @@ class _PaymentPageState extends State<PaymentPage> {
                               .withOpacity(0.5),
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
+                        child: const Padding(
+                          padding: EdgeInsets.only(
                             left: 10,
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                " My Name",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                              Container(
-                                width: 72, // Increase the width
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromARGB(0, 45, 42, 134)
-                                      .withOpacity(1),
-                                  shape: BoxShape.circle,
-                                  // borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: const Icon(
-                                  Icons.person_2_outlined,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: MyName(),
                         ),
                       ),
                     ),
@@ -106,138 +89,27 @@ class _PaymentPageState extends State<PaymentPage> {
                   child: Container(
                     padding: const EdgeInsets.all(30),
                     child: const Text(
-                      "Edit Payment Method",
+                      "Pay with Bkash",
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     ),
                   ),
                 ),
 
-                Container(
-                  margin: const EdgeInsets.all(20),
-                  height: 405,
-                  width: 326,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              height: 24,
-                              width: 49,
-                              padding: const EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Image.asset("assets/visa.png")),
-                          Container(
-                              height: 25,
-                              width: 50,
-                              // padding: const EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                  // color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Image.asset("assets/paypal.png")),
-                          Container(
-                              height: 25,
-                              width: 50,
-                              // padding: const EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                  // color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Image.asset("assets/bkash.png")),
-                          Container(
-                              height: 25,
-                              width: 50,
-                              // padding: const EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                  // color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Image.asset("assets/nagad.png")),
-                        ],
-                      ),
-                      const TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Card Number',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                      const TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Card Holder Name',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                      const TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Expiry Date',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                      const TextField(
-                        decoration: InputDecoration(
-                          hintText: 'CVV',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        height: 40,
-                        margin: const EdgeInsets.only(top: 20),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          gradient: LinearGradient(
-                            colors: [
-                              Color(0xff339583),
-                              Color(0xff418B40),
-                              Color(0xff799993),
-                            ],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 60, vertical: 0),
-                              foregroundColor: Colors.transparent,
-                              backgroundColor: Colors.transparent,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                              )),
-                          child: const Text(
-                            'Save and Confirm',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const BkashPaymentMethod(
+                              title: "Bkash Pay",
+                            )));
+                  },
+                  child: Container(
+                      height: 405,
+                      width: 326,
+                      // padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                          // color: Colors.white,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Image.asset("assets/bkash.jpg")),
                 ),
               ],
             ),

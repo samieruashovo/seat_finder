@@ -1,58 +1,93 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:seat_finder/auth/login_ui.dart';
-import 'package:seat_finder/auth/signup_ui.dart';
-import 'package:seat_finder/core/event_description_ui.dart';
-import 'package:seat_finder/core/payment_ui.dart';
-import 'package:seat_finder/core/profile_page.dart';
+import 'package:get/get.dart';
 
 import '../api_services.dart';
+import '../controllers/api/api_controller.dart';
 import '../models/events.dart';
-import '../widgets/my_name.dart';
+import 'event_description_ui.dart';
 
-class EventPage extends StatefulWidget {
-  const EventPage({super.key});
-
+class MyEvents extends StatefulWidget {
+  MyEvents({super.key});
+  List<Event> myEventsList = [];
   @override
-  State<EventPage> createState() => _EventPageState();
+  State<MyEvents> createState() => _MyEventsState();
 }
 
-class _EventPageState extends State<EventPage> {
-  final _pageController = PageController(initialPage: 0);
-  late Future<List<Event>> futureEvents;
+class _MyEventsState extends State<MyEvents> {
+  // ApiController apiController = Get.put(ApiController());
+  late Future<dynamic> myEvents;
+  late Future<List<Event>> allEventsList;
 
-  /// Controller to handle bottom nav bar and also handles initial page
-  // final NotchBottomBarController _controller =
-  //     NotchBottomBarController(index: 0);
+  // Future<void> filterEventsByUserId(List<Event> events, int userId) async {
+  //   print("running");
+  //   myEventsList = events.where((event) => event.id == userId).toList();
+  //   print(myEventsList);
+  //   print("sll");
+  // }
+  List<Event> removeDuplicatesById(List<Event> events) {
+    Set<int> ids = Set<int>(); // Set to store unique event ids
+    List<Event> uniqueEvents = []; // List to store unique events
 
-  int maxCount = 5;
+    for (Event event in events) {
+      // If the id is not in the set, add the event to the unique events list
+      if (!ids.contains(event.id)) {
+        uniqueEvents.add(event);
+        ids.add(event.id); // Add the id to the set to mark it as seen
+      }
+    }
+
+    return uniqueEvents;
+  }
+
+  Future<List<Event>> fetchEventData() async {
+    print("sssdereee");
+    // print(removeDuplicatesById(widget.myEventsList));
+    return removeDuplicatesById(widget.myEventsList);
+  }
+
+  void getAllEvents() async {
+    myEvents = ApiServices().fetchMyEvents(8);
+    allEventsList = ApiServices().fetchEvents();
+    List<Event> events = await allEventsList;
+
+    for (Event event in events) {
+      myEvents.then((value) => value.forEach((element) {
+            // print(element);
+            if (event.id == element['event']) {
+              widget.myEventsList.add(event);
+//first print
+              // print(myEventsList);
+            }
+          }));
+    }
+    //second print
+    // print(myEventsList);
+  }
 
   @override
-  void initState() {
-    futureEvents = ApiServices().fetchEvents();
+  initState() {
+    super.initState();
+    print("aaa");
+
+    // myEvents.then((value) => value.forEach((element) {
+    //       print(element);
+    //     }));
+    // print(allEventsList);
+    getAllEvents();
+    print("bbb");
+    // print(myEventsList);
+    // allEventsList.then((events) {
+    //   filterEventsByUserId(events, 8);
+    // });
     super.initState();
   }
 
   @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final List<Widget> bottomBarPages = [
-      const PaymentPage(),
-      const SignupPage(),
-      const PaymentPage(),
-      // const EventDescriptionPage(),
-      const LoginPage(),
-    ];
-
+    // print("wpeo");
+    // print(widget.myEventsList);
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Image.asset('assets/seatfinder 1.png'),
-      // ),
-      body: Scaffold(
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
         body: Container(
@@ -69,102 +104,24 @@ class _EventPageState extends State<EventPage> {
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 50, left: 30),
-                child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Image.asset(
-                      'assets/seatfinder 1.png',
-                      width: 200,
-                    )),
+            children: [
+              const SizedBox(
+                height: 50,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 30),
-                    child: Align(
-                        alignment: Alignment.topLeft,
-                        child: InkWell(
-                          // onTap: () {
-                          //   Navigator.of(context).push(MaterialPageRoute(
-                          //       builder: (context) => const ProfilePage()));
-                          // },
-                          child: Image.asset(
-                            'assets/nav_icon_1.png',
-                            // width: 200,
-                          ),
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, right: 30),
-                    child: Container(
-                      height: 45,
-                      width: 157,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(0, 58, 20, 95)
-                            .withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ProfilePage()));
-                          },
-                          child: MyName(),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Container(
-                width: 300,
-                height: 40,
-                // color: Colors.white,
-                decoration: BoxDecoration(
-                  color:
-                      const Color.fromARGB(0, 229, 219, 219).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Search for events or join by seatcode',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
+              const Text(
+                'Registered Events',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 40),
-              Container(
-                padding: const EdgeInsets.only(left: 30),
-                child: const Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Events Happening",
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                ),
+              const SizedBox(
+                height: 20,
               ),
-              const SizedBox(height: 20),
               FutureBuilder<List<Event>>(
-                future: futureEvents,
+                future:
+                    fetchEventData(), // Assuming myEvents is your list of events and userId is the id you want to filter by
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
@@ -184,9 +141,10 @@ class _EventPageState extends State<EventPage> {
                             child: InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => EventDescriptionPage(
-                                          event: event,
-                                        )));
+                                  builder: (context) => EventDescriptionPage(
+                                    event: event,
+                                  ),
+                                ));
                               },
                               child: Stack(
                                 alignment: Alignment.bottomLeft,
@@ -194,7 +152,7 @@ class _EventPageState extends State<EventPage> {
                                   Image.network(event.thumb),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 10),
+                                        horizontal: 10, vertical: 5),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -256,8 +214,6 @@ class _EventPageState extends State<EventPage> {
               ),
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_conditional_assignment
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,104 +23,169 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
+    setUserInfo();
     super.initState();
-    _retrieveUserInfo();
-    print("runnning xx");
   }
 
-  Future<void> _retrieveUserInfo() async {
-    final userInfo = await getUserInfo();
-    print(userInfo);
-    if (userInfo != null) {
-      setState(() {
-        _usernameController.text = userInfo['username'] ?? '';
-        _emailController.text = userInfo['email'] ?? '';
-        print(_usernameController.text);
-        // Set other user details if needed
-      });
-    } else {
-      // Handle error retrieving user info
-    }
+  Future setUserInfo() async {
+    var userInfo = await getUserInfo("final@gmail.com");
+    _usernameController.text = userInfo!['name'];
+    _emailController.text = userInfo['email'];
+    print(_usernameController.text);
   }
 
-  Future<String?> refreshAccessToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? refreshToken = prefs.getString('token');
-    print(refreshToken! + " ss");
-    print("x");
-    if (refreshToken == null) {
-      // Handle missing refresh token
-      return null;
-    }
-
-    final response = await http.post(
-      Uri.parse(ApiEndPoints.baseUrl + 'auth/jwt/refresh/'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'refresh': refreshToken}),
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final String? newAccessToken = responseData['access'];
-
-      if (newAccessToken != null) {
-        await prefs.setString('access', newAccessToken);
-        return newAccessToken;
-      }
-    }
-
-    // Handle error
-    return null;
-  }
-
-  Future<Map<String, dynamic>?> getUserInfo() async {
+  Future<Map<String, dynamic>?> getUserInfo(String email) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString('access');
-    print(accessToken! + " asasas");
-    // If access token is not available, refresh it
-    if (accessToken == null) {
-      accessToken = await refreshAccessToken();
-    }
+    print("${accessToken ?? "No token"} asasas");
 
     if (accessToken == null) {
+      print("No access token available.");
       // Handle missing access token
       return null;
     }
 
-    final response = await http.get(
-      Uri.parse(ApiEndPoints.baseUrl + 'auth/users/me/'),
+    final url =
+        Uri.parse('${ApiEndPoints.baseUrl}auth/users/by-username/$email/');
+    print(url.toString() + " urllll");
+
+    var response = await http.get(
+      url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
+        'Authorization': 'Bearer $accessToken', // Use 'Bearer' for JWT tokens
       },
     );
+
+    print("First attempt response:");
     print(response.body);
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
-      print(response.body);
       return json.decode(response.body);
     } else if (response.statusCode == 401) {
-      // Token might have expired, try refreshing it
-      accessToken = await refreshAccessToken();
-
-      if (accessToken != null) {
-        final retryResponse = await http.get(
-          Uri.parse(ApiEndPoints.baseUrl + 'auth/users/me/'),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $accessToken',
-          },
-        );
-
-        if (retryResponse.statusCode == 200) {
-          return json.decode(retryResponse.body);
-        }
-      }
+      print("Access token expired or invalid.");
+      // Handle token expiry, prompt user to log in again
     }
 
-    // Handle error
+    print("Failed to load user info. Status code: ${response.statusCode}");
     return null;
   }
+
+  TextEditingController currentPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+
+  Future<void> changePassword() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString('access');
+    final url = Uri.parse('${ApiEndPoints.baseUrl}/auth/users/set_password/');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken', // Use 'Bearer' for JWT tokens
+      },
+      body: jsonEncode(<String, String>{
+        'current_password': currentPasswordController.text,
+        'new_password': newPasswordController.text,
+      }),
+    );
+  }
+
+  // Future<String?> refreshAccessToken() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? refreshToken = prefs.getString('access');
+  //   if (refreshToken == null) {
+  //     print("No refresh token available.");
+  //     return null;
+  //   }
+
+  //   final response = await http.post(
+  //     Uri.parse('${ApiEndPoints.baseUrl}auth/token/refresh/'),
+  //     headers: {'Content-Type': 'application/json'},
+  //     body: json.encode({'refresh': refreshToken}),
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     final data = json.decode(response.body);
+  //     return data['access'];
+  //   } else {
+  //     print('Failed to refresh token. Status code: ${response.statusCode}');
+  //     return null;
+  //   }
+  // }
+  // Future<String?> refreshAccessToken() async {
+  //   // Implement your token refresh logic here
+  //   // For demonstration purposes, returning a dummy token
+  //   final response = await http.post(
+  //     Uri.parse('${ApiEndPoints.baseUrl}auth/token/refresh/'),
+  //     headers: {'Content-Type': 'application/json'},
+  //     body: json.encode({'refresh': 'your_refresh_token_here'}),
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     final data = json.decode(response.body);
+  //     return data['access'];
+  //   } else {
+  //     print('Failed to refresh token. Status code: ${response.statusCode}');
+  //     return null;
+  //   }
+  // }
+
+  // Future<Map<String, dynamic>?> getUserInfo() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? accessToken = prefs.getString('access');
+  //   print("${accessToken!} asasas");
+  //   // If access token is not available, refresh it
+  //   if (accessToken == null) {
+  //     accessToken = await refreshAccessToken();
+  //   }
+
+  //   // if (accessToken == null) {
+  //   //   // Handle missing access token
+  //   //   return null;
+  //   // }
+  //   print(accessToken! + "accesstoken22");
+  //   final url = Uri.parse('${ApiEndPoints.baseUrl}auth/users/me/');
+  //   print(url.toString() + "urllll");
+  //   final response = await http.get(
+  //     url,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Token $accessToken',
+  //     },
+  //   );
+  //   print("lakaka");
+  //   print(response.body);
+  //   print(response.statusCode);
+
+  //   if (response.statusCode == 200) {
+  //     print("ueieie");
+  //     print(response.body);
+  //     return json.decode(response.body);
+  //   } else if (response.statusCode == 401) {
+  //     // Token might have expired, try refreshing it
+  //     accessToken = await refreshAccessToken();
+
+  //     if (accessToken != null) {
+  //       final retryResponse = await http.get(
+  //         Uri.parse('${ApiEndPoints.baseUrl}auth/users/me/'),
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': 'Bearer $accessToken',
+  //         },
+  //       );
+
+  //       if (retryResponse.statusCode == 200) {
+  //         print("slskwe");
+  //         return json.decode(retryResponse.body);
+  //       }
+  //     }
+  //   }
+
+  //   // Handle error
+  //   return null;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -174,18 +241,19 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: TextField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _usernameController,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     labelText: _usernameController.text.isEmpty
-                        ? 'Username'
+                        ? 'Name'
                         : _usernameController.text,
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -196,16 +264,19 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: TextField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelText: _emailController.text.isEmpty
+                        ? 'Email'
+                        : _emailController.text,
+                    labelStyle: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -216,16 +287,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: TextField(
-                  controller: _passwordController,
+                  controller: currentPasswordController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    labelText: 'Password',
+                    labelText: 'Current Password',
                     labelStyle: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -236,36 +307,36 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: TextField(
-                  controller: _retypePasswordController,
+                  controller: newPasswordController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    labelText: 'Retype-Password',
+                    labelText: 'New Password',
                     labelStyle: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 37,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: const Color(0xff67438C),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextField(
-                  controller: _mobileNumberController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    labelText: 'Add Mobile Number',
-                    labelStyle: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                ),
-              ),
-              SizedBox(
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // Container(
+              //   height: 37,
+              //   margin: const EdgeInsets.symmetric(horizontal: 10),
+              //   decoration: BoxDecoration(
+              //     color: const Color(0xff67438C),
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: TextField(
+              //     controller: _mobileNumberController,
+              //     decoration: const InputDecoration(
+              //       border: OutlineInputBorder(
+              //           borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              //       labelText: 'Add Mobile Number',
+              //       labelStyle: TextStyle(color: Colors.white, fontSize: 14),
+              //     ),
+              //   ),
+              // ),
+              const SizedBox(
                 height: 100,
               ),
               Container(
@@ -284,7 +355,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
-                    // Implement save functionality
+                    changePassword();
                   },
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
