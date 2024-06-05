@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:seat_finder/core/event_page_ui.dart';
+// import 'package:seat_finder/core/event_page_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,7 +21,7 @@ class RegisterationController extends GetxController {
     try {
       var headers = {'Content-Type': 'application/json'};
       var url = Uri.parse(ApiEndPoints.baseUrl + AuthEndPoints.registerEmail);
-      print(url);
+      // print(url);
       Map body = {
         'name': nameController.text,
         'email': emailController.text.trim(),
@@ -31,8 +31,8 @@ class RegisterationController extends GetxController {
 
       http.Response response =
           await http.post(url, body: jsonEncode(body), headers: headers);
-      print(response.body);
-      print(response.statusCode);
+      // print(response.body);
+      // print(response.statusCode);
       if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
 

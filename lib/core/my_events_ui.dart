@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:seat_finder/core/registered_event_description_ui.dart';
 
 import '../api_services.dart';
 import '../controllers/api/api_controller.dart';
@@ -128,7 +129,10 @@ class _MyEventsState extends State<MyEvents> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Text('No events found');
+                    return const Text(
+                      'No events found',
+                      style: TextStyle(color: Colors.white),
+                    );
                   } else {
                     return Expanded(
                       child: ListView.builder(
@@ -141,7 +145,8 @@ class _MyEventsState extends State<MyEvents> {
                             child: InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => EventDescriptionPage(
+                                  builder: (context) =>
+                                      RegisterdEventDescriptionPage(
                                     event: event,
                                   ),
                                 ));
@@ -150,6 +155,14 @@ class _MyEventsState extends State<MyEvents> {
                                 alignment: Alignment.bottomLeft,
                                 children: [
                                   Image.network(event.thumb),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Text(
+                                      event.name,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
@@ -157,14 +170,6 @@ class _MyEventsState extends State<MyEvents> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: Text(
-                                            event.name,
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
-                                        ),
                                         Container(
                                           height: 50,
                                           width: 40,

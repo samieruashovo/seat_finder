@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -18,7 +20,7 @@ class LoginController extends GetxController {
     var headers = {'Content-Type': 'application/json'};
     try {
       var url = Uri.parse(ApiEndPoints.baseUrl + AuthEndPoints.loginEmail);
-      print(url);
+      // print(url);
       Map body = {
         'email': emailController.text.trim(),
         'password': passwordController.text
@@ -27,7 +29,7 @@ class LoginController extends GetxController {
       http.Response response =
           await http.post(url, body: jsonEncode(body), headers: headers);
 
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 

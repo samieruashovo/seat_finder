@@ -78,18 +78,23 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> changePassword() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString('access');
+    print(accessToken);
     final url = Uri.parse('${ApiEndPoints.baseUrl}/auth/users/set_password/');
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken', // Use 'Bearer' for JWT tokens
-      },
-      body: jsonEncode(<String, String>{
-        'current_password': currentPasswordController.text,
-        'new_password': newPasswordController.text,
-      }),
-    );
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken', // Use 'Bearer' for JWT tokens
+        },
+        body: jsonEncode(<String, String>{
+          'current_password': currentPasswordController.text,
+          'new_password': newPasswordController.text,
+        }),
+      );
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   // Future<String?> refreshAccessToken() async {
@@ -190,11 +195,11 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Scaffold(
-        backgroundColor: Colors.transparent,
-        extendBodyBehindAppBar: true,
-        body: Container(
-          height: double.infinity,
+      backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: true,
+      body: SingleChildScrollView(
+        child: Container(
+          height: 800,
           width: double.infinity,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -280,6 +285,45 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 10,
               ),
               Container(
+                height: 40,
+                margin: const EdgeInsets.only(top: 20),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xff11BE22),
+                      Color(0xff3B63A0),
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    changePassword();
+                  },
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 60, vertical: 0),
+                      foregroundColor: Colors.transparent,
+                      backgroundColor: Colors.transparent,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      )),
+                  child: const Text(
+                    'Save and Confirm',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
                 height: 37,
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
@@ -337,7 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
               //   ),
               // ),
               const SizedBox(
-                height: 100,
+                height: 10,
               ),
               Container(
                 height: 40,
@@ -366,7 +410,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       )),
                   child: const Text(
-                    'Save and Confirm',
+                    'Save and Change Password',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

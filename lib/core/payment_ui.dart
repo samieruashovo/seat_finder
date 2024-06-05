@@ -40,57 +40,60 @@ class _PaymentPageState extends State<PaymentPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                // SizedBox(
-                //   height: 10,
+                SizedBox(
+                  height: 50,
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 50, right: 20),
+                //   child: Align(
+                //       alignment: Alignment.topRight,
+                //       child: Image.asset(
+                //         'assets/back_1.png',
+                //         // width: 200,
+                //       )),
                 // ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50, right: 20),
-                  child: Align(
-                      alignment: Alignment.topRight,
-                      child: Image.asset(
-                        'assets/back_1.png',
-                        // width: 200,
-                      )),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, left: 30),
-                      child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Image.asset(
-                            'assets/nav_icon_1.png',
-                            // width: 200,
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, right: 30),
-                      child: Container(
-                        height: 45,
-                        width: 157,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(0, 58, 20, 95)
-                              .withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(
-                            left: 10,
-                          ),
-                          child: MyName(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Padding(
+                //       padding: const EdgeInsets.only(top: 10, left: 30),
+                //       child: Align(
+                //           alignment: Alignment.topLeft,
+                //           child: Image.asset(
+                //             'assets/nav_icon_1.png',
+                //             // width: 200,
+                //           )),
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.only(top: 10, right: 30),
+                //       child: Container(
+                //         height: 45,
+                //         width: 157,
+                //         decoration: BoxDecoration(
+                //           color: const Color.fromARGB(0, 58, 20, 95)
+                //               .withOpacity(0.5),
+                //           borderRadius: BorderRadius.circular(100),
+                //         ),
+                //         child: const Padding(
+                //           padding: EdgeInsets.only(
+                //             left: 10,
+                //           ),
+                //           child: MyName(),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 Align(
-                  alignment: Alignment.topLeft,
+                  alignment: Alignment.topCenter,
                   child: Container(
                     padding: const EdgeInsets.all(30),
                     child: const Text(
                       "Pay with Bkash",
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),

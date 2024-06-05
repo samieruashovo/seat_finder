@@ -1,14 +1,15 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:seat_finder/core/create_event.dart';
-import 'package:seat_finder/core/event_description_ui.dart';
+// import 'package:seat_finder/core/event_description_ui.dart';
 import 'package:seat_finder/core/my_events_ui.dart';
-import 'package:seat_finder/core/scanqr_ui.dart';
+// import 'package:seat_finder/core/scanqr_ui.dart';
+import 'package:seat_finder/core/search_page.dart';
 
-import '../auth/login_ui.dart';
-import '../auth/signup_ui.dart';
+// import '../auth/login_ui.dart';
+// import '../auth/signup_ui.dart';
 import 'event_page_ui.dart';
-import 'payment_ui.dart';
+// import 'payment_ui.dart';
 
 class NavBarPage extends StatefulWidget {
   const NavBarPage({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class _NavBarPageState extends State<NavBarPage> {
       const EventPage(),
       // const EventDescriptionPage(),
       MyEvents(),
-      const ScanQrPage(),
+      const SearchPage(),
 
       const CreateEvent(),
     ];
@@ -98,9 +99,14 @@ class _NavBarPageState extends State<NavBarPage> {
                   // itemLabel: 'Page 2',
                 ),
                 BottomBarItem(
-                  inActiveItem:
-                      Image.asset("assets/icons/notification_icon.png"),
-                  activeItem: Image.asset("assets/icons/notification_icon.png"),
+                  inActiveItem: Icon(
+                    Icons.search_outlined,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                  activeItem: Icon(
+                    Icons.search_outlined,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
                   // itemLabel: 'Page 3',
                 ),
                 BottomBarItem(

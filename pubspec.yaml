@@ -45,9 +45,12 @@ dependencies:
   http: ^1.2.1
   shared_preferences: ^2.2.3
   flutter_bkash: ^0.2.0
-  flutter_stripe: ^10.1.1
-  fluttertoast: ^8.2.6
-  flutter_dot: ^0.0.0
+  image_picker: ^1.1.2
+  intl: ^0.18.1
+  qr_flutter: ^4.1.0
+  # flutter_stripe: ^10.1.1
+  # fluttertoast: ^8.2.6
+  # flutter_dot: ^0.0.0
 
 dev_dependencies:
   flutter_test:

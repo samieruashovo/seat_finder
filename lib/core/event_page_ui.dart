@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:seat_finder/auth/login_ui.dart';
 import 'package:seat_finder/auth/signup_ui.dart';
 import 'package:seat_finder/core/event_description_ui.dart';
@@ -81,23 +82,23 @@ class _EventPageState extends State<EventPage> {
                     )),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 30),
-                    child: Align(
-                        alignment: Alignment.topLeft,
-                        child: InkWell(
-                          // onTap: () {
-                          //   Navigator.of(context).push(MaterialPageRoute(
-                          //       builder: (context) => const ProfilePage()));
-                          // },
-                          child: Image.asset(
-                            'assets/nav_icon_1.png',
-                            // width: 200,
-                          ),
-                        )),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 10, left: 30),
+                  //   child: Align(
+                  //       alignment: Alignment.topLeft,
+                  //       child: InkWell(
+                  //         // onTap: () {
+                  //         //   Navigator.of(context).push(MaterialPageRoute(
+                  //         //       builder: (context) => const ProfilePage()));
+                  //         // },
+                  //         child: Image.asset(
+                  //           'assets/nav_icon_1.png',
+                  //           // width: 200,
+                  //         ),
+                  //       )),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10, right: 30),
                     child: Container(
@@ -122,36 +123,36 @@ class _EventPageState extends State<EventPage> {
                   ),
                 ],
               ),
+              // const SizedBox(height: 20),
+              // Container(
+              //   width: 300,
+              //   height: 40,
+              //   // color: Colors.white,
+              //   decoration: BoxDecoration(
+              //     color:
+              //         const Color.fromARGB(0, 229, 219, 219).withOpacity(0.2),
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: const Row(
+              //     children: [
+              //       Padding(
+              //         padding: EdgeInsets.only(left: 10),
+              //         child: Icon(
+              //           Icons.search,
+              //           color: Colors.white,
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: EdgeInsets.only(left: 10),
+              //         child: Text(
+              //           'Search for events or join by seatcode',
+              //           style: TextStyle(color: Colors.white),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               const SizedBox(height: 20),
-              Container(
-                width: 300,
-                height: 40,
-                // color: Colors.white,
-                decoration: BoxDecoration(
-                  color:
-                      const Color.fromARGB(0, 229, 219, 219).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Search for events or join by seatcode',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
               Container(
                 padding: const EdgeInsets.only(left: 30),
                 child: const Align(
@@ -201,10 +202,48 @@ class _EventPageState extends State<EventPage> {
                                       children: [
                                         Align(
                                           alignment: Alignment.bottomCenter,
-                                          child: Text(
-                                            event.name,
-                                            style: const TextStyle(
-                                                color: Colors.white),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.3, // set width according to your requirement
+                                            child: Text(
+                                              event.name,
+                                              textAlign: TextAlign.justify,
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                              maxLines:
+                                                  null, // or specify the maximum number of lines you want
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 50,
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                    0, 74, 200, 231)
+                                                .withOpacity(0.7),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                DateFormat.jm().format(
+                                                    DateFormat("HH:mm:ss'Z'")
+                                                        .parseUtc(event.date
+                                                            .split('-')[2]
+                                                            .substring(3, 12))),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         Container(

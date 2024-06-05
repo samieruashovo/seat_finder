@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:seat_finder/models/events.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,19 +17,21 @@ import 'package:http/http.dart' as http;
 
 import 'payment_ui.dart';
 
-class EventDescriptionPage extends StatefulWidget {
+class RegisterdEventDescriptionPage extends StatefulWidget {
   final Event event;
 
-  const EventDescriptionPage({
+  const RegisterdEventDescriptionPage({
     super.key,
     required this.event,
   });
 
   @override
-  State<EventDescriptionPage> createState() => _EventDescriptionPageState();
+  State<RegisterdEventDescriptionPage> createState() =>
+      _RegisterdEventDescriptionPageState();
 }
 
-class _EventDescriptionPageState extends State<EventDescriptionPage> {
+class _RegisterdEventDescriptionPageState
+    extends State<RegisterdEventDescriptionPage> {
   ApiController apiController = Get.put(ApiController());
   @override
   Widget build(BuildContext context) {
@@ -112,7 +115,7 @@ class _EventDescriptionPageState extends State<EventDescriptionPage> {
                       alignment: Alignment.topCenter,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Image.network(
                             fit: BoxFit.fill,
                             widget.event.thumb,
@@ -135,7 +138,7 @@ class _EventDescriptionPageState extends State<EventDescriptionPage> {
                           padding: EdgeInsets.only(top: 0, left: 30),
                           child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text("Event",
+                              child: Text("My Event",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 30,
@@ -171,27 +174,9 @@ class _EventDescriptionPageState extends State<EventDescriptionPage> {
                     onPressed: () {},
                     icon: Image.asset('assets/location_1.png'),
                   ),
-                  Container(
-                    constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context)
-                          .size
-                          .width, // Set max width to the screen width
-                    ),
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width *
-                            0.30, // Set max width to the screen width
-                      ),
-                      child: Text(
-                        widget.event.location,
-                        style: TextStyle(color: Colors.white),
-                        maxLines:
-                            null, // Allows the text to span multiple lines
-                        overflow: TextOverflow
-                            .visible, // Ensures the text won't be clipped
-                        softWrap: true, // Enables text wrapping
-                      ),
-                    ),
+                  Text(
+                    widget.event.location,
+                    style: const TextStyle(color: Colors.white),
                   ),
                   // IconButton(
                   //   onPressed: () {},
@@ -345,55 +330,27 @@ class _EventDescriptionPageState extends State<EventDescriptionPage> {
                   side: const BorderSide(color: Color(0xffB9B0B0)),
                 ),
                 onPressed: () async {
-                  if (widget.event.hasFee) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            PaymentPage(event: widget.event)));
-                  } else {
-                    http.Response res =
-                        await apiController.eventsRegister(widget.event.id);
-                    // print("ssssss");
-                    // print(res.body);
-                    if (res.statusCode == 201) {
-                      showDialog(
-                          context: context,
-                          builder: (_) {
-                            return AlertDialog(
-                              title: const Text('Registration Successful'),
-                              content: const Text(
-                                  'User has been registered successfully.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: Navigator.of(context).pop,
-                                  child: const Text('Ok'),
-                                ),
-                              ],
-                            );
-                          });
-                    } else {
-                      showDialog(
-                          context: context,
-                          builder: (_) {
-                            return AlertDialog(
-                              title: const Text('Registration unsuccessful'),
-                              content: Text("Error Code: ${res.statusCode}"),
-                              actions: [
-                                TextButton(
-                                  onPressed: Navigator.of(context).pop,
-                                  child: const Text('Ok'),
-                                ),
-                              ],
-                            );
-                          });
-                    }
-                  }
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: const Center(child: Text('QR Ticket')),
+                          content: QrImageView(
+                            data: widget.event.link,
+                            version: QrVersions.auto,
+                            size: 250.0,
+                          ),
+                        );
+                      });
                 },
                 child: const Text(
-                  "Register Now",
+                  "My Ticket",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              SizedBox(height: 50),
+              const SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),
