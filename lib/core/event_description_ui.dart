@@ -350,18 +350,13 @@ class _EventDescriptionPageState extends State<EventDescriptionPage> {
                         builder: (context) =>
                             PaymentPage(event: widget.event)));
                   } else {
-                    http.Response res =
-                        await apiController.eventsRegister(widget.event.id);
-                    // print("ssssss");
-                    // print(res.body);
-                    if (res.statusCode == 201) {
+                    if (widget.event.capacity <= 0) {
                       showDialog(
                           context: context,
                           builder: (_) {
                             return AlertDialog(
-                              title: const Text('Registration Successful'),
-                              content: const Text(
-                                  'User has been registered successfully.'),
+                              title: const Text('Registration unsuccessful'),
+                              content: Text("0 Seat Remaining"),
                               actions: [
                                 TextButton(
                                   onPressed: Navigator.of(context).pop,
@@ -371,20 +366,42 @@ class _EventDescriptionPageState extends State<EventDescriptionPage> {
                             );
                           });
                     } else {
-                      showDialog(
-                          context: context,
-                          builder: (_) {
-                            return AlertDialog(
-                              title: const Text('Registration unsuccessful'),
-                              content: Text("Error Code: ${res.statusCode}"),
-                              actions: [
-                                TextButton(
-                                  onPressed: Navigator.of(context).pop,
-                                  child: const Text('Ok'),
-                                ),
-                              ],
-                            );
-                          });
+                      http.Response res =
+                          await apiController.eventsRegister(widget.event.id);
+                      // print("ssssss");
+                      // print(res.body);
+                      if (res.statusCode == 201) {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return AlertDialog(
+                                title: const Text('Registration Successful'),
+                                content: const Text(
+                                    'User has been registered successfully.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: Navigator.of(context).pop,
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            });
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return AlertDialog(
+                                title: const Text('Registration unsuccessful'),
+                                content: Text("Error Code: ${res.statusCode}"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: Navigator.of(context).pop,
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            });
+                      }
                     }
                   }
                 },

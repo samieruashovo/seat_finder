@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -37,6 +38,8 @@ class _CreateEventState extends State<CreateEvent> {
   final TextEditingController _eventPasswordController =
       TextEditingController();
   final TextEditingController _eventLinkController = TextEditingController();
+  bool isPrivateCLicked = false;
+  bool hasFeeClicked = false;
   // final TextEditingController _eventSpeakerController1 =
   //     TextEditingController();
   // final TextEditingController _eventSpeakerController2 =
@@ -205,8 +208,9 @@ class _CreateEventState extends State<CreateEvent> {
             context: context,
             builder: (_) {
               return AlertDialog(
-                title: const Text('Registration Successful'),
-                content: const Text('User has been registered successfully.'),
+                title: const Text('Event Post Successful'),
+                content:
+                    const Text('User has been posted an event successfully.'),
                 actions: [
                   TextButton(
                     onPressed: Navigator.of(context).pop,
@@ -240,7 +244,7 @@ class _CreateEventState extends State<CreateEvent> {
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Container(
-          height: 1050,
+          height: 1100,
           width: double.infinity,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -511,6 +515,31 @@ class _CreateEventState extends State<CreateEvent> {
               const SizedBox(
                 height: 10,
               ),
+
+              Row(
+                children: [
+                  GFCheckbox(
+                    size: GFSize.SMALL,
+                    activeBgColor: Colors.purple,
+                    type: GFCheckboxType.square,
+                    onChanged: (value) {
+                      setState(() {
+                        hasFeeClicked = value;
+                      });
+                    },
+                    value: hasFeeClicked,
+                    inactiveIcon: null,
+                  ),
+                  const Text("Has Fee",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      )),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               Container(
                 height: 55,
                 margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -528,6 +557,30 @@ class _CreateEventState extends State<CreateEvent> {
                     labelStyle: TextStyle(color: Colors.white),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  GFCheckbox(
+                    size: GFSize.SMALL,
+                    activeBgColor: Colors.purple,
+                    type: GFCheckboxType.square,
+                    onChanged: (value) {
+                      setState(() {
+                        isPrivateCLicked = value;
+                      });
+                    },
+                    value: isPrivateCLicked,
+                    inactiveIcon: null,
+                  ),
+                  const Text("Is Private",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      )),
+                ],
               ),
               const SizedBox(
                 height: 10,
@@ -815,9 +868,9 @@ class _CreateEventState extends State<CreateEvent> {
                         _eventLocationController.text,
                         _eventCityController.text,
                         _eventCapacityController.text,
-                        'false',
-                        '12345',
-                        'true',
+                        isPrivateCLicked.toString(),
+                        _eventPasswordController.text,
+                        hasFeeClicked.toString(),
                         _eventPriceController.text,
                         _eventHostController.text,
                         _eventTagsController.text);
@@ -840,6 +893,9 @@ class _CreateEventState extends State<CreateEvent> {
                   ),
                 ),
               ),
+              // SizedBox(
+              //   height: 30,
+              // ),
             ],
           ),
         ),

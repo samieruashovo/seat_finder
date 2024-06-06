@@ -233,13 +233,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Padding(
                   padding: EdgeInsets.all(15.0),
                   child: Text(
-                    "Edit Profile",
+                    "My Profile",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                 ),
               ),
               Container(
-                height: 37,
+                height: 50,
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   color: const Color(0xff67438C),
@@ -259,10 +259,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 25,
               ),
               Container(
-                height: 37,
+                height: 50,
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   color: const Color(0xff67438C),
@@ -284,83 +284,43 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                height: 40,
-                margin: const EdgeInsets.only(top: 20),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xff11BE22),
-                      Color(0xff3B63A0),
-                    ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                ),
-                child: ElevatedButton(
-                  onPressed: () {
-                    changePassword();
-                  },
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 60, vertical: 0),
-                      foregroundColor: Colors.transparent,
-                      backgroundColor: Colors.transparent,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      )),
-                  child: const Text(
-                    'Save and Confirm',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 37,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: const Color(0xff67438C),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextField(
-                  controller: currentPasswordController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    labelText: 'Current Password',
-                    labelStyle: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 37,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: const Color(0xff67438C),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextField(
-                  controller: newPasswordController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    labelText: 'New Password',
-                    labelStyle: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              // SizedBox(
+              // Container(
+              //   height: 40,
+              //   margin: const EdgeInsets.only(top: 20),
+              //   decoration: const BoxDecoration(
+              //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              //     gradient: LinearGradient(
+              //       colors: [
+              //         Color(0xff11BE22),
+              //         Color(0xff3B63A0),
+              //       ],
+              //       begin: Alignment.centerLeft,
+              //       end: Alignment.centerRight,
+              //     ),
+              //   ),
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       changePassword();
+              //     },
+              //     style: ElevatedButton.styleFrom(
+              //         padding: const EdgeInsets.symmetric(
+              //             horizontal: 60, vertical: 0),
+              //         foregroundColor: Colors.transparent,
+              //         backgroundColor: Colors.transparent,
+              //         shape: const RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              //         )),
+              //     child: const Text(
+              //       'Save and Confirm',
+              //       style: TextStyle(
+              //         fontSize: 16,
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.white,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(
               //   height: 10,
               // ),
               // Container(
@@ -371,54 +331,94 @@ class _ProfilePageState extends State<ProfilePage> {
               //     borderRadius: BorderRadius.circular(10),
               //   ),
               //   child: TextField(
-              //     controller: _mobileNumberController,
+              //     controller: currentPasswordController,
               //     decoration: const InputDecoration(
               //       border: OutlineInputBorder(
               //           borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              //       labelText: 'Add Mobile Number',
-              //       labelStyle: TextStyle(color: Colors.white, fontSize: 14),
+              //       labelText: 'Current Password',
+              //       labelStyle: TextStyle(color: Colors.white),
               //     ),
               //   ),
               // ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 40,
-                margin: const EdgeInsets.only(top: 20),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xff11BE22),
-                      Color(0xff3B63A0),
-                    ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                ),
-                child: ElevatedButton(
-                  onPressed: () {
-                    changePassword();
-                  },
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 60, vertical: 0),
-                      foregroundColor: Colors.transparent,
-                      backgroundColor: Colors.transparent,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      )),
-                  child: const Text(
-                    'Save and Change Password',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // Container(
+              //   height: 37,
+              //   margin: const EdgeInsets.symmetric(horizontal: 10),
+              //   decoration: BoxDecoration(
+              //     color: const Color(0xff67438C),
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: TextField(
+              //     controller: newPasswordController,
+              //     decoration: const InputDecoration(
+              //       border: OutlineInputBorder(
+              //           borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              //       labelText: 'New Password',
+              //       labelStyle: TextStyle(color: Colors.white),
+              //     ),
+              //   ),
+              // ),
+              // // SizedBox(
+              // //   height: 10,
+              // // ),
+              // // Container(
+              // //   height: 37,
+              // //   margin: const EdgeInsets.symmetric(horizontal: 10),
+              // //   decoration: BoxDecoration(
+              // //     color: const Color(0xff67438C),
+              // //     borderRadius: BorderRadius.circular(10),
+              // //   ),
+              // //   child: TextField(
+              // //     controller: _mobileNumberController,
+              // //     decoration: const InputDecoration(
+              // //       border: OutlineInputBorder(
+              // //           borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              // //       labelText: 'Add Mobile Number',
+              // //       labelStyle: TextStyle(color: Colors.white, fontSize: 14),
+              // //     ),
+              // //   ),
+              // // ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // Container(
+              //   height: 40,
+              //   margin: const EdgeInsets.only(top: 20),
+              //   decoration: const BoxDecoration(
+              //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              //     gradient: LinearGradient(
+              //       colors: [
+              //         Color(0xff11BE22),
+              //         Color(0xff3B63A0),
+              //       ],
+              //       begin: Alignment.centerLeft,
+              //       end: Alignment.centerRight,
+              //     ),
+              //   ),
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       changePassword();
+              //     },
+              //     style: ElevatedButton.styleFrom(
+              //         padding: const EdgeInsets.symmetric(
+              //             horizontal: 60, vertical: 0),
+              //         foregroundColor: Colors.transparent,
+              //         backgroundColor: Colors.transparent,
+              //         shape: const RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              //         )),
+              //     child: const Text(
+              //       'Save and Change Password',
+              //       style: TextStyle(
+              //         fontSize: 16,
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.white,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

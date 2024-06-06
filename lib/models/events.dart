@@ -8,6 +8,7 @@ class Event {
   final String city;
   final int capacity;
   final bool isPrivate;
+  final String pkey;
   final bool hasFee;
   final int? entryFee;
   final String host;
@@ -27,6 +28,7 @@ class Event {
     required this.isPrivate,
     required this.hasFee,
     this.entryFee,
+    required this.pkey,
     required this.host,
     required this.tags,
     required this.thumb,
@@ -45,6 +47,7 @@ class Event {
       capacity: json['capacity'],
       isPrivate: json['isPrivate'],
       hasFee: json['hasFee'],
+      pkey: json['pkey'],
       entryFee: json['entryFee'],
       host: json['host'],
       tags: json['tags'],

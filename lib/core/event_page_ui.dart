@@ -19,6 +19,7 @@ class EventPage extends StatefulWidget {
 
 class _EventPageState extends State<EventPage> {
   final _pageController = PageController(initialPage: 0);
+  final TextEditingController _eventPassController = TextEditingController();
   late Future<List<Event>> futureEvents;
 
   /// Controller to handle bottom nav bar and also handles initial page
@@ -116,7 +117,7 @@ class _EventPageState extends State<EventPage> {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => const ProfilePage()));
                           },
-                          child: MyName(),
+                          child: const MyName(),
                         ),
                       ),
                     ),
@@ -184,10 +185,52 @@ class _EventPageState extends State<EventPage> {
                             margin: const EdgeInsets.only(bottom: 20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => EventDescriptionPage(
-                                          event: event,
-                                        )));
+                                if (event.isPrivate) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return AlertDialog(
+                                          title: const Text('Private Event'),
+                                          content: Column(
+                                            children: [
+                                              Text(
+                                                  'Give the Password to join the event '),
+                                              TextField(
+                                                controller:
+                                                    _eventPassController,
+                                              )
+                                            ],
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                // print(event.pkey);
+                                                // print(
+                                                //     _eventPassController.text);
+                                                if (event.pkey ==
+                                                    _eventPassController.text) {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EventDescriptionPage(
+                                                                event: event,
+                                                              )));
+                                                } else {
+                                                  Navigator.of(context).pop();
+                                                }
+                                              },
+                                              child: const Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                } else {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          EventDescriptionPage(
+                                            event: event,
+                                          )));
+                                }
                               },
                               child: Stack(
                                 alignment: Alignment.bottomLeft,
