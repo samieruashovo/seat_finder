@@ -270,6 +270,31 @@ class _EventDescriptionPageState extends State<EventDescriptionPage> {
                   ),
                 ],
               ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 30, right: 30),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    height: 50,
+                    // width: 200,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(0, 74, 200, 231)
+                          .withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "At most " +
+                            widget.event.capacity.toString() +
+                            " can join",
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               // const Align(
               //   alignment: Alignment.topLeft,
               //   child: Padding(
